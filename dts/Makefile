@@ -1,7 +1,7 @@
 FIRMWARE_FILE := "BB-DHT22-Pins-00A0.dtbo"
 FIRMWARE_DEST := "/lib/firmware/$(FIRMWARE_FILE)"
 
-all: BB-DHT22-Pins-00A0.dtbo
+all: $(FIRMWARE_FILE)
 
 $(FIRMWARE_FILE): BB-DHT22-Pins-00A0.dts
 	dtc -O dtb -o $@ -b 0 -@ $<

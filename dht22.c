@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <prussdrv.h>
 #include <pruss_intc_mapping.h>
+#include <string.h>
 
 #define PRU_NUM 0 /* which of the two PRUs are we using? */
 
@@ -106,8 +107,6 @@ static int *get_pru_mem(void)
 
     int *intp = (int *)pruDataMem;
 
-    intp[1] = 0;
-
     return intp;
 }
 
@@ -122,7 +121,7 @@ int main(int argc, char **argv) {
    }
 
    /* initialize the library, PRU and interrupt; launch our PRU program */
-   if(pru_setup("./example.bin")) {
+   if(pru_setup("./dht22.bin")) {
       pru_cleanup();
       return -1;
    }
@@ -140,7 +139,32 @@ int main(int argc, char **argv) {
 
    int *prumem = get_pru_mem();
 
-   printf("Prumem[0] = %d\n", prumem[0]);
+   unsigned char byte0 = (prumem[0] >> 24) & 0xff;
+   unsigned char byte1 = (prumem[0] >> 16) & 0xff;
+   unsigned char byte2 = (prumem[0] >>  8) & 0xff;
+   unsigned char byte3 = (prumem[0] >>  0) & 0xff;
+   //char byte4 = (prumem[1] >>  0) & 0xff;
+   unsigned char computed_checksum = byte0 + byte1 + byte2 + byte3;
+
+   if (computed_checksum != prumem[1]) {
+	printf("error\n");
+	return 1;
+   }
+
+   int humidity_raw = ((int)byte0) * 256 + byte1;
+   int temp_raw = ((int)byte2) * 256 + byte3;
+
+   int humidity_int = humidity_raw / 10;
+   int humidity_frac = humidity_raw % 10;
+
+   int temp_int = temp_raw / 10;
+   int temp_frac = temp_raw % 10;
+
+   printf("Humidity = %u.%u, Temp = %u.%u\n",
+	humidity_int, humidity_frac,
+	temp_int, temp_frac);
+
+   //printf("int1 = %u, int2 = %u\n", prumem[0], prumem[1]);
 
    /* clear the event, disable the PRU and let the library clean up */
    return pru_cleanup();
