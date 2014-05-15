@@ -1,0 +1,3 @@
+echo BB-BONE-PRU-01 >/sys/devices/bone_capemgr.9/slots
+
+echo BB-DHT22-Pins >/sys/devices/bone_capemgr.9/slots
