@@ -1,4 +1,5 @@
 DHT22 Temperature and Humidity Sensor - Beaglebone tools
+========================================================
 
 Enable PRU on BBB:
 ```shell
