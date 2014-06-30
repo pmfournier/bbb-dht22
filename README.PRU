@@ -1,0 +1,8 @@
+Using the TI ARM's PRU is quite an obscure craft. A few resources provide much help.
+
+Main resources
+
+Understanding the device tree video: 
+Derek Molloy's mother-of-all pin mode tables; this includes indications of which pins are in used: https://github.com/derekmolloy/boneDeviceTree/tree/master/docs
+PRU asm language reference @ TI: http://processors.wiki.ti.com/index.php/PRU_Assembly_Instructions
+BeagleBoard's PRU github; essential examples for memory access from within PRU: https://github.com/beagleboard/am335x_pru_package
