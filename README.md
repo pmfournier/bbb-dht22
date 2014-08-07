@@ -1,6 +1,9 @@
 DHT22 Temperature and Humidity Sensor - Beaglebone tools
 ========================================================
 
+Pinout
+------
+
 Using pin P8_15 as input.
 Using pin P8_11 as output.
 
@@ -14,6 +17,26 @@ Both pins connect directly to the DHT22's data pin, but the output pin is protec
                                         |
 [ BBB P8_11 (out) ]----[ 620 ohm ]------`
 ```
+
+Changing the pin modes
+----------------------
+
+The input pin is mapped to an internal PRU register for ultra fast access. This requires changing the pin mode with the following procedure.
+
+Build the device tree overlay:
+
+```shell
+cd dht
+make
+```
+
+Then copy it to the firmware directory so it gets loaded on boot.
+
+```shell
+cp BB-DHT22-Pins-00A0.dtbo /lib/firmware
+```
+
+Older versions of the BBB linux kernel supported dynamic application of device tree overlays with the following commands, but as of 3.8.13-bone57, this doesn't seem to work anymore. Commands for this older method are below for reference:
 
 Enable PRU on BBB:
 ```shell
