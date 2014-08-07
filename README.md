@@ -28,15 +28,10 @@ Build the device tree overlay:
 ```shell
 cd dht
 make
+make install
 ```
 
-Then copy it to the firmware directory so it gets loaded on boot.
-
-```shell
-cp BB-DHT22-Pins-00A0.dtbo /lib/firmware
-```
-
-Older versions of the BBB linux kernel supported dynamic application of device tree overlays with the following commands, but as of 3.8.13-bone57, this doesn't seem to work anymore. Commands for this older method are below for reference:
+The install part copies the device tree fragment into /lib/firmware.
 
 Enable PRU on BBB:
 ```shell
@@ -46,5 +41,5 @@ echo BB-BONE-PRU-01 >/sys/devices/bone_capemgr.9/slots
 At this point, the PRU should be detected in dmesg. The kernel module used to interface with it is uio_pruss. It gets loaded automatically.
 
 ```shell
-echo BB-DHT22-Pins-01 >/sys/devices/bone_capemgr.9/slots
+echo BB-DHT22-Pins >/sys/devices/bone_capemgr.9/slots
 ```
